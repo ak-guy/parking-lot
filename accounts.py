@@ -1,5 +1,5 @@
 # from abc import abstractmethod, ABC
-from . import Person
+from utils import Person
 
 class Account:
     def __init__(self, user_name, password, person: Person, account_status):

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from constants import ParkingSpotType
-from vehicle import IVehicle
+from vehicle import Vehicle
 
 '''
 Here using an Interface for creating different parking spots does not make any sense
@@ -112,7 +112,7 @@ class ParkingSpot:
     def is_free(self):
         return self.__free
     
-    def assign_spot(self, vehicle: IVehicle):
+    def assign_spot(self, vehicle: Vehicle):
         self.__free = False
         self.__vehicle = vehicle
 

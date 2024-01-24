@@ -6,6 +6,7 @@ class Vehicle:
         self.__vehicle_type = vehicle_type
 
     def assign_ticket(self):
+        '''will make use of ParkingTicket class to assign a ticket to a unique registration_number'''
         pass
 
 class Car(Vehicle):

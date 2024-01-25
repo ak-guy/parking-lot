@@ -1,6 +1,18 @@
 from abc import ABC, abstractmethod
 from constants import ParkingSpotType
 from vehicle import Vehicle
+from parking_floor import ParkingFloor
+import uuid
+
+def generate_incrementor(start):
+    num = start
+    def incrementer():
+        nonlocal num
+        num += 1
+        return num
+    return incrementer
+
+incrementor = generate_incrementor()
 
 '''
 Here using an Interface for creating different parking spots does not make any sense
@@ -140,6 +152,37 @@ class ParkingSpotBike(ParkingSpot):
     def __init__(self, number):
         super().__init__(number, ParkingSpotType.BIKE)
 
-if __name__ == '__main__':
-    parking_obj = ParkingSpotCompact(12)
-    print(parking_obj.__dict__)
+class IAddSpots(ABC):
+    @abstractmethod
+    def addSpot(self, count: int, obj: ParkingFloor):
+        pass
+
+class AddCompactSpot(IAddSpots):
+    def addSpot(self, count: int, obj: ParkingFloor):
+        for start in range(count):
+            uuid = incrementor()
+            obj.__compact_spots.add(ParkingSpotCompact(uuid))
+
+class AddLargeSpot(IAddSpots):
+    def addSpot(self, count: int, obj: ParkingFloor):
+        for start in range(count):
+            uuid = incrementor()
+            obj.__compact_spots.add(ParkingSpotLarge(uuid))
+
+class AddHandicappedSpot(IAddSpots):
+    def addSpot(self, count: int, obj: ParkingFloor):
+        for start in range(count):
+            uuid = incrementor()
+            obj.__compact_spots.add(ParkingSpotHandicapped(uuid))
+
+class AddElectricSpot(IAddSpots):
+    def addSpot(self, count: int, obj: ParkingFloor):
+        for start in range(count):
+            uuid = incrementor()
+            obj.__compact_spots.add(ParkingSpotElectric(uuid))
+
+class AddBikeSpot(IAddSpots):
+    def addSpot(self, count: int, obj: ParkingFloor):
+        for start in range(count):
+            uuid = incrementor()
+            obj.__compact_spots.add(ParkingSpotBike(uuid))

@@ -31,3 +31,13 @@ class Person:
         self.__phone_number = phone_number
         self.__email = email
 
+class Counter:
+    def __init__(self, start):
+        self._start = start
+
+    def increment(self, val):
+        self.start += 1
+        return self._start
+
+    def __call__(self):
+        return self.increment()

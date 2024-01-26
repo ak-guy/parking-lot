@@ -2,17 +2,9 @@ from abc import ABC, abstractmethod
 from constants import ParkingSpotType
 from vehicle import Vehicle
 from parking_floor import ParkingFloor
-import uuid
+from utils import Counter
 
-def generate_incrementor(start):
-    num = start
-    def incrementer():
-        nonlocal num
-        num += 1
-        return num
-    return incrementer
-
-incrementor = generate_incrementor()
+incrementor = Counter(1000)
 
 '''
 Here using an Interface for creating different parking spots does not make any sense
@@ -152,6 +144,7 @@ class ParkingSpotBike(ParkingSpot):
     def __init__(self, number):
         super().__init__(number, ParkingSpotType.BIKE)
 
+# # # Add Parking Spots Classes # # #
 class IAddSpots(ABC):
     @abstractmethod
     def addSpot(self, count: int, obj: ParkingFloor):

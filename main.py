@@ -15,12 +15,12 @@ class ParkingLot(metaclass=SingletonParkingLot):
     def __init__(self, name: str, address: str):
         self._name = name
         self._address = address
-        self._parking_floor = [ParkingFloor()]
+        self._parking_floor = [ParkingFloor('Ground')]
         self._info_panel = InfoPanel()
 
-    def addParkingFloor(self):
+    def addParkingFloor(self, floor_name: str):
         '''will be responsible for creating ParkingFloor objects'''
-        new_parking_floor = ParkingFloor('Ground')
+        new_parking_floor = ParkingFloor(floor_name)
         self._parking_floor.append(new_parking_floor)
     
     '''

@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from constants import ParkingSpotType
 from vehicle import Vehicle
-from parking_floor import ParkingFloor
 from utils import Counter
 
 incrementor = Counter(1000)
@@ -147,35 +146,35 @@ class ParkingSpotBike(ParkingSpot):
 # # # Add Parking Spots Classes # # #
 class IAddSpots(ABC):
     @abstractmethod
-    def addSpot(self, count: int, obj: ParkingFloor):
+    def addSpot(self, count: int, obj):
         pass
 
 class AddCompactSpot(IAddSpots):
-    def addSpot(self, count: int, obj: ParkingFloor):
+    def addSpot(self, count: int, obj):
         for start in range(count):
             uuid = incrementor()
             obj.__compact_spots.add(ParkingSpotCompact(uuid))
 
 class AddLargeSpot(IAddSpots):
-    def addSpot(self, count: int, obj: ParkingFloor):
+    def addSpot(self, count: int, obj):
         for start in range(count):
             uuid = incrementor()
             obj.__compact_spots.add(ParkingSpotLarge(uuid))
 
 class AddHandicappedSpot(IAddSpots):
-    def addSpot(self, count: int, obj: ParkingFloor):
+    def addSpot(self, count: int, obj):
         for start in range(count):
             uuid = incrementor()
             obj.__compact_spots.add(ParkingSpotHandicapped(uuid))
 
 class AddElectricSpot(IAddSpots):
-    def addSpot(self, count: int, obj: ParkingFloor):
+    def addSpot(self, count: int, obj):
         for start in range(count):
             uuid = incrementor()
             obj.__compact_spots.add(ParkingSpotElectric(uuid))
 
 class AddBikeSpot(IAddSpots):
-    def addSpot(self, count: int, obj: ParkingFloor):
+    def addSpot(self, count: int, obj):
         for start in range(count):
             uuid = incrementor()
             obj.__compact_spots.add(ParkingSpotBike(uuid))

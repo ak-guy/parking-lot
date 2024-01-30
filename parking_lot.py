@@ -1,6 +1,4 @@
 from parking_floor import ParkingFloor
-from info_panel import InfoPanel
-
 
 class SingletonParkingLot(type):
     _instance = {}
@@ -12,58 +10,75 @@ class SingletonParkingLot(type):
 
         return self._instance[self]
     
-class InfoPanel:
-    def __init__(self):
-        pass
+class _InfoPanel:
+    '''_InfoPanel will be observing all Entrance Panel'''
+    def __init__(self, parking_lot_obj):
+        self._total_free_compact_spots = 0
+        self._total_free_large_spots = 0
+        self._total_free_handicapped_spots = 0
+        self._total_free_electric_spots = 0
+        self._total_free_bike_spots = 0
+        self.get_updated_empty_parking_slots(parking_lot_obj)
 
-    def show_empty_slots(self, parking_lot_obj):
+    def get_updated_empty_parking_slots(self, parking_lot_obj):
         parking_floor_list = SingletonParkingLot._instance[parking_lot_obj]._parking_floor
-        total_free_compact_spots = 0
-        total_free_large_spots = 0
-        total_free_handicapped_spots = 0
-        total_free_electric_spots = 0
-        total_free_bike_spots = 0
         for parking_floor in parking_floor_list:
-            total_free_compact_spots += parking_floor.__free_compact_spots
-            total_free_large_spots += parking_floor.__free_large_spots
-            total_free_handicapped_spots += parking_floor.__free_handicapped_spots
-            total_free_electric_spots += parking_floor.__free_handicapped_spots
-            total_free_bike_spots += parking_floor.__free_bike_spots
+            self._total_free_compact_spots += parking_floor.__free_compact_spots
+            self._total_free_large_spots += parking_floor.__free_large_spots
+            self._total_free_handicapped_spots += parking_floor.__free_handicapped_spots
+            self._total_free_electric_spots += parking_floor.__free_electric_spots
+            self._total_free_bike_spots += parking_floor.__free_bike_spots
+    
+    def get_notified(self, compact=None, large=None, handicapped=None, electric=None, bike=None):
+        if compact:
+            self._total_free_compact_spots += compact
+        if large:
+            self._total_free_large_spots += large
+        if handicapped:
+            self._total_free_handicapped_spots += handicapped
+        if electric:
+            self._total_free_electric_spots += electric
+        if bike:
+            self._total_free_bike_spots += bike
         
+        self.show_message()
+
+    def show_messsage(self):
         panel_msg = ''
-        if total_free_compact_spots:
-            panel_msg += f'Total Number of free compact spots = {total_free_compact_spots}'
+        if self._total_free_compact_spots:
+            panel_msg += f'Total Number of free compact spots = {self._total_free_compact_spots}'
         else:
             panel_msg += f'No compact spots available'
         
         panel_msg += '\n'
 
-        if total_free_large_spots:
-            panel_msg += f'Total Number of free large spots = {total_free_large_spots}'
+        if self._total_free_large_spots:
+            panel_msg += f'Total Number of free large spots = {self._total_free_large_spots}'
         else:
             panel_msg += f'No large spots available'
         
         panel_msg += '\n'
 
-        if total_free_handicapped_spots:
-            panel_msg += f'Total Number of free handicapped spots = {total_free_handicapped_spots}'
+        if self._total_free_handicapped_spots:
+            panel_msg += f'Total Number of free handicapped spots = {self._total_free_handicapped_spots}'
         else:
             panel_msg += f'No handicapped spots available'
         
         panel_msg += '\n'
 
-        if total_free_electric_spots:
-            panel_msg += f'Total Number of free electric spots = {total_free_electric_spots}'
+        if self._total_free_electric_spots:
+            panel_msg += f'Total Number of free electric spots = {self._total_free_electric_spots}'
         else:
             panel_msg += f'No electric spots available'
         
         panel_msg += '\n'
 
-        if total_free_bike_spots:
-            panel_msg += f'Total Number of free bike spots = {total_free_bike_spots}'
+        if self._total_free_bike_spots:
+            panel_msg += f'Total Number of free bike spots = {self._total_free_bike_spots}'
         else:
             panel_msg += f'No bike spots available'
         
+        # send data to frontend
         return panel_msg
         
 
@@ -72,7 +87,7 @@ class ParkingLot(metaclass=SingletonParkingLot):
         self._name = name
         self._address = address
         self._parking_floor = []
-        self._info_panel = InfoPanel()
+        self._info_panel = _InfoPanel(self)
 
     def createParkingFloor(self, floor_name,
                            number_of_compact_spots,
